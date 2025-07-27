@@ -1,8 +1,11 @@
 pipeline {
   agent any
 
+  tools {
+    nvm 'nvm-22' // 👈 This must match the name defined in Global Tool Configuration
+  }
+
   environment {
-    NODE_VERSION = '22.17.1'
     GIT_AUTHOR_NAME = 'ci-bot (Brage Dorin)'
     GIT_AUTHOR_EMAIL = 'dorin.brage@gmail.com'
   }
@@ -14,11 +17,13 @@ pipeline {
       }
     }
 
-    stage('Set Up Node') {
+    stage('Check Node Environment') {
       steps {
         sh '''
-          source ~/.nvm/nvm.sh
-          nvm use $NODE_VERSION
+          echo "✅ Node version:"
+          node -v
+          echo "✅ NPM version:"
+          npm -v
         '''
       }
     }
@@ -35,10 +40,12 @@ pipeline {
       }
       steps {
         sh '''
+          git config user.name "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "🔢 Current version: $CURRENT_VERSION"
 
-          # Bump version and create git tag
           npm version patch -m "🔖 Release %s [skip ci]"
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "🆕 New version: $NEW_VERSION"
@@ -68,7 +75,6 @@ pipeline {
       }
       steps {
         sh '''
-          # Bump to next pre-release version (e.g., 1.0.3 → 1.0.4-dev)
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           NEXT_DEV_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF+=1; print $1 "." $2 "." $3 "-dev"}')
 
