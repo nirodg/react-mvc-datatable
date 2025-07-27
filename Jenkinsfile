@@ -1,22 +1,18 @@
 pipeline {
     agent any
-
     tools {
         nodejs 'v24.4.1'
     }
-
     environment {
-        GIT_AUTHOR_NAME  = 'ci-bot (Brage Dorin)'
+        GIT_AUTHOR_NAME = 'ci-bot (Brage Dorin)'
         GIT_AUTHOR_EMAIL = 'dorin.brage@gmail.com'
     }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('Verify Node Environment') {
             steps {
                 sh '''
@@ -27,17 +23,16 @@ pipeline {
                 '''
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm ci'
             }
         }
-
         stage('Bump Patch Version & Tag') {
             when {
                 expression {
-                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    return branch?.endsWith('master')
                 }
             }
             steps {
@@ -54,11 +49,11 @@ pipeline {
                 '''
             }
         }
-
         stage('Publish to NPM') {
             when {
                 expression {
-                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    return branch?.endsWith('master')
                 }
             }
             steps {
@@ -70,11 +65,11 @@ pipeline {
                 }
             }
         }
-
         stage('Bump to next -dev version') {
             when {
                 expression {
-                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    return branch?.endsWith('master')
                 }
             }
             steps {
@@ -90,7 +85,6 @@ pipeline {
             }
         }
     }
-
     post {
         success {
             echo "🎉 Build and optional release (if on master) complete"
