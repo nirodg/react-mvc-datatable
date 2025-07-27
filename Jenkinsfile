@@ -35,9 +35,8 @@ pipeline {
                     return branch?.endsWith('master')
                 }
             }
-
             withCredentials([sshUserPrivateKey(credentialsId: 'github_ssh', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: '')]) {
-              sh '''
+                sh '''
                 set -e
 
                 git config user.name "$GIT_AUTHOR_NAME"
@@ -56,33 +55,33 @@ pipeline {
                 git push origin HEAD:master --tags
               '''
             }
-          }
         }
-        stage('Publish to NPM') {
-            when {
-                expression {
-                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
-                    return branch?.endsWith('master')
-                }
+    }
+    stage('Publish to NPM') {
+        when {
+            expression {
+                def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                return branch?.endsWith('master')
             }
-            steps {
-                withCredentials([string(credentialsId: 'npm_token', variable: 'NPM_TOKEN')]) {
-                    sh '''
+        }
+        steps {
+            withCredentials([string(credentialsId: 'npm_token', variable: 'NPM_TOKEN')]) {
+                sh '''
                       echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
                       npm publish --access public
                     '''
-                }
             }
         }
-        stage('Bump to next -dev version') {
-            when {
-                expression {
-                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
-                    return branch?.endsWith('master')
-                }
+    }
+    stage('Bump to next -dev version') {
+        when {
+            expression {
+                def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                return branch?.endsWith('master')
             }
-            steps {
-                sh '''
+        }
+        steps {
+            sh '''
                   CURRENT_VERSION=$(node -p "require('./package.json').version")
                   NEXT_DEV_VERSION=$(echo $CURRENT_VERSION | awk -F. '{$NF+=1; print $1 "." $2 "." $3 "-dev"}')
 
@@ -91,15 +90,15 @@ pipeline {
                   git commit -m "🚧 Prepare next development version $NEXT_DEV_VERSION [skip ci]"
                   git push origin HEAD:master
                 '''
-            }
-        }
-    }
-    post {
-        success {
-            echo '🎉 Build and optional release (if on master) complete'
-        }
-        failure {
-            echo '❌ Build failed'
         }
     }
 }
+post {
+    success {
+        echo '🎉 Build and optional release (if on master) complete'
+    }
+    failure {
+        echo '❌ Build failed'
+    }
+}
+
