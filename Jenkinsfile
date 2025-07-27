@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    nvm 'nvm-22' // 👈 This must match the name defined in Global Tool Configuration
+    nodejs 'node22'
   }
 
   environment {
@@ -17,7 +17,7 @@ pipeline {
       }
     }
 
-    stage('Check Node Environment') {
+    stage('Verify Node Environment') {
       steps {
         sh '''
           echo "✅ Node version:"
@@ -27,7 +27,7 @@ pipeline {
         '''
       }
     }
-
+    
     stage('Install Deps') {
       steps {
         sh 'npm ci'
