@@ -3,6 +3,25 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
+  "description": "A reusable MUI-based abstract datatable for React apps",
+  "license": "MIT",
+  "author": {
+    "email": "dorin.brage@gmail.com",
+    "name": "Brage Dorin"
+  },
+  "main": "dist/react-mvc-datatable.umd.js",
+  "module": "dist/react-mvc-datatable.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nirodg/react-mvc-datatable.git"
+  },
+  "homepage": "https://github.com/nirodg/react-mvc-datatable#readme",
+  "bugs": {
+    "url": "https://github.com/nirodg/react-mvc-datatable/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],

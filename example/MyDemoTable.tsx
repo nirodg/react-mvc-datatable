@@ -1,12 +1,9 @@
 import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid'
 import { DataTable } from '../src/componets/DataTable'
-import { Entity } from '../src/types/abstract-entity'
 import { DataTableConfig } from '../src/types/DataTableTypes'
 import { User } from './user'
 import EditIcon from "@mui/icons-material/Edit";
 
-import { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { DialogConfig } from '../src/types/BaseCustomDialogTypes'
 
 
@@ -87,18 +84,18 @@ export default class MyDemoTable extends DataTable<User> {
             pageSizeOptions: [5, 10, 20, 100],
             defaultPageSize: 20,
             initialRows: [mockUser],
-            dialogConfig: undefined
+            dialogConfig: this.buildDialog()
         }
     }
 
     handleSubmit(item: User): Promise<void> {
         // Your save logic here - this would typically call an API
-        return new Promise((resolver)=>{
-            setTimeout(()=>{
+        return new Promise((resolver) => {
+            setTimeout(() => {
                 // ID exists, apply update operations
-                if(item.id){
+                if (item.id) {
                     console.log("Updating employee :", item);
-                } else{
+                } else {
                     // ID does NOT exist, add new entry
                     console.log("Saving employee:", item);
                 }

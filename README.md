@@ -1,69 +1,152 @@
-# React + TypeScript + Vite
+# react-mvc-datatable
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# React MVC Datatable
 
-Currently, two official plugins are available:
+[![npm version](https://img.shields.io/npm/v/react-mvc-datatable.svg)](https://www.npmjs.com/package/react-mvc-datatable)
+[![license](https://img.shields.io/npm/l/react-mvc-datatable.svg)](./LICENSE)
+[![build](https://img.shields.io/github/actions/workflow/status/nirodg/react-mvc-datatable/ci.yml?label=build)](https://github.com/nirodg/react-mvc-datatable/actions)
+[![issues](https://img.shields.io/github/issues/nirodg/react-mvc-datatable)](https://github.com/nirodg/react-mvc-datatable/issues)
+[![stars](https://img.shields.io/github/stars/nirodg/react-mvc-datatable)](https://github.com/nirodg/react-mvc-datatable/stargazers)
+[![minified + gzip](https://img.shields.io/bundlephobia/minzip/react-mvc-datatable)](https://bundlephobia.com/package/react-mvc-datatable)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+Intead of repetitve copy-paste I made myself a library that helps up to build pages that contains DataTable elements.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
+## How-To
+Create the needed entity that extends **Entity**
+
+Example:
 ```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+export interface User extends Entity {
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+    username?: string;
+    email?: string;
+    available?: boolean;
+
+}
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
+2. Create the page that extends **DataTable**
+
+
+Example: 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+export default class MyDemoTable extends DataTable<User> {
+
+    buildDialog(): DialogConfig<User> {
+        return {
+            title: (isEdit) => (isEdit ? "Edit User" : "Add User"),
+            submitText: (isEdit) => (isEdit ? "Save Changes" : "Create User"),
+            validate: (item) => {
+                const errors: Record<string, string> = {};
+                if (!item.email) errors.username = "The email is required"
+                if (!item.available) errors.available = "The availability is required"
+                return { isValid: Object.keys(errors).length === 0, errors };
+
+            },
+            fields: [
+                {
+                    name: "username",
+                    label: "Username",
+                    required: false,
+                    autoFocus: false
+                },
+
+                {
+                    name: "email",
+                    label: "Email",
+                    required: true,
+                    autoFocus: false
+                }
+
+                {
+                    name: "available",
+                    label: "Is Available",
+                    type: "checkbox",
+                    required: true,
+                    autoFocus: false
+                }
+            ]
+        }
+    }
+
+
+    buildColumns(): GridColDef[] {
+        return [
+            {
+                field: "username",
+                headerName: "Username",
+                flex: 1
+            },
+
+            {
+                field: "email",
+                headerName: "Email",
+                flex: 1
+            },
+            {
+                field: "actions",
+                type: "actions",
+                headerName: "Actions",
+                width: 100,
+                getActions: (params) => [
+                    <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Edit"
+                        onClick={() => this.handleEdit(params.row)}
+                    />,
+                ],
+            },
+        ]
+    }
+
+    getConfig(): DataTableConfig<User> {
+        return {
+            title: 'Users',
+            columns: this.buildColumns(),
+            addButtonLabel: "Add new user",
+            pageSizeOptions: [5, 10, 20, 100],
+            defaultPageSize: 20,
+            initialRows: [mockUser],
+            dialogConfig: this.buildDialog()
+        }
+    }
+
+    handleSubmit(item: User): Promise<void> {
+        // Your save logic here - this would typically call an API
+        return new Promise((resolver) => {
+            setTimeout(() => {
+                // ID exists, apply update operations
+                if (item.id) {
+                    console.log("Updating employee :", item);
+                } else {
+                    // ID does NOT exist, add new entry
+                    console.log("Saving employee:", item);
+                }
+            })
+        })
+    }
+
+}
+
+export const mockUser: User = {
+    id: 1,
+    email: "user@info.com",
+    username: "user",
+    available: false
+}
+
 ```
+
+# Next steps ?
+
+✅ Start using it, give feedback!
+✅ Contributions are welcome
+
+## 📄 License
+react-mvc-datatable is licensed under the MIT license. See the LICENSE file for details.
