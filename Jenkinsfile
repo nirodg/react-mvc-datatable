@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Bump Patch Version & Tag') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 sh '''
@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Publish to NPM') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 withCredentials([string(credentialsId: 'npm_token', variable: 'NPM_TOKEN')]) {
@@ -68,7 +68,7 @@ pipeline {
         }
         stage('Bump to next -dev') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 sh '''
