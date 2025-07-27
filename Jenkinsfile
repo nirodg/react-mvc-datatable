@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    nodejs 'node22'
+    nodejs 'v24.4.1'
   }
 
   environment {
