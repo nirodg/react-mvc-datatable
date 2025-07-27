@@ -36,7 +36,9 @@ pipeline {
 
         stage('Bump Patch Version & Tag') {
             when {
-                branch 'master'
+                expression {
+                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                }
             }
             steps {
                 sh '''
@@ -55,7 +57,9 @@ pipeline {
 
         stage('Publish to NPM') {
             when {
-                branch 'master'
+                expression {
+                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                }
             }
             steps {
                 withCredentials([string(credentialsId: 'npm_token', variable: 'NPM_TOKEN')]) {
@@ -69,7 +73,9 @@ pipeline {
 
         stage('Bump to next -dev version') {
             when {
-                branch 'master'
+                expression {
+                    sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim() == 'master'
+                }
             }
             steps {
                 sh '''
