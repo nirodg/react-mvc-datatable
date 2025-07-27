@@ -35,19 +35,28 @@ pipeline {
                     return branch?.endsWith('master')
                 }
             }
-            steps {
-                sh '''
-                  git config user.name "$GIT_AUTHOR_NAME"
-                  git config user.email "$GIT_AUTHOR_EMAIL"
 
-                  CURRENT_VERSION=$(node -p "require('./package.json').version")
-                  echo "🔢 Current version: $CURRENT_VERSION"
+            withCredentials([sshUserPrivateKey(credentialsId: 'github_ssh', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: '')]) {
+              sh '''
+                set -e
 
-                  npm version patch -m "🔖 Release %s [skip ci]"
+                git config user.name "$GIT_AUTHOR_NAME"
+                git config user.email "$GIT_AUTHOR_EMAIL"
 
-                  git push origin HEAD:master --tags
-                '''
+                CURRENT_VERSION=$(node -p "require('./package.json').version")
+                echo "🔢 Current version: $CURRENT_VERSION"
+
+                npm version patch -m "🔖 Release %s [skip ci]"
+
+                git remote set-url origin git@github.com:nirodg/react-mvc-datatable.git
+
+                eval "$(ssh-agent -s)"
+                ssh-add $SSH_KEY
+
+                git push origin HEAD:master --tags
+              '''
             }
+          }
         }
         stage('Publish to NPM') {
             when {
@@ -87,10 +96,10 @@ pipeline {
     }
     post {
         success {
-            echo "🎉 Build and optional release (if on master) complete"
+            echo '🎉 Build and optional release (if on master) complete'
         }
         failure {
-            echo "❌ Build failed"
+            echo '❌ Build failed'
         }
     }
 }
