@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/react-mvc-datatable.svg)](https://www.npmjs.com/package/react-mvc-datatable)
 [![license](https://img.shields.io/npm/l/react-mvc-datatable.svg)](./LICENSE)
-[![build](https://img.shields.io/github/actions/workflow/status/nirodg/react-mvc-datatable/ci.yml?label=build)](https://github.com/nirodg/react-mvc-datatable/actions)
+[![Jenkins Build](https://img.shields.io/jenkins/build?jobUrl=https://jenkins.eorghe.com/view/NPM/job/react-mvc-datatable/)](https://jenkins.eorghe.com/view/NPM/job)
 [![issues](https://img.shields.io/github/issues/nirodg/react-mvc-datatable)](https://github.com/nirodg/react-mvc-datatable/issues)
 [![stars](https://img.shields.io/github/stars/nirodg/react-mvc-datatable)](https://github.com/nirodg/react-mvc-datatable/stargazers)
 [![minified + gzip](https://img.shields.io/bundlephobia/minzip/react-mvc-datatable)](https://bundlephobia.com/package/react-mvc-datatable)
