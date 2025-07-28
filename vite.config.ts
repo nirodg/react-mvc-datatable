@@ -16,6 +16,7 @@ import { resolve } from 'path'; // Import 'resolve' from 'path' module
 export default defineConfig({
   plugins: [react()],
   build: {
+    emptyOutDir: false,
     // Configure Vite to build as a library
     lib: {
       // Entry point for the library

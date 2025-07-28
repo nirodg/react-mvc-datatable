@@ -1,3 +1,5 @@
-export * from './componets/DataTable'
+export * from './components/DataTable'
+export * from './components/DefaultDialog'
+export * from './components/BaseCustomDialog'
 export * from './types/DataTableTypes'
 export * from './types/abstract-entity'

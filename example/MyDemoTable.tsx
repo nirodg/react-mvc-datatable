@@ -1,5 +1,5 @@
 import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid'
-import { DataTable } from '../src/componets/DataTable'
+import { DataTable } from '../src/components/DataTable'
 import { DataTableConfig } from '../src/types/DataTableTypes'
 import { User } from './user'
 import EditIcon from "@mui/icons-material/Edit";

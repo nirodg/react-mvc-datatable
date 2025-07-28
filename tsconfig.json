@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationDir": "dist",
     "outDir": "dist",
+    "rootDir": "src",
     "moduleResolution": "Node",
     "jsx": "react-jsx",
     "esModuleInterop": true,
