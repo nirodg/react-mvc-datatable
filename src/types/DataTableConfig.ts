@@ -26,7 +26,7 @@ import type { DialogConfig } from "./BaseCustomDialogTypes";
  * };
  * ```
  */
-export interface DataTableConfig<T extends GridValidRowModel> {
+interface DataTableConfig<T extends GridValidRowModel> {
   /** The title displayed above the data table */
   title: string;
 
@@ -53,3 +53,4 @@ export interface DataTableConfig<T extends GridValidRowModel> {
 }
 
 export type TypedGridColDef<T extends GridValidRowModel> = GridColDef<T, any, any>;
+export type {DataTableConfig};

@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import type { DataTableConfig } from "../types/DataTableTypes";
+import type { DataTableConfig } from "../types/DataTableConfig";
 import { DefaultDialog } from "./DefaultDialog";
-import type { Entity } from "../types/abstract-entity";
+import type { Entity } from "../types/entity";
 import type { DialogConfig } from "../types/BaseCustomDialogTypes";
 
 /**

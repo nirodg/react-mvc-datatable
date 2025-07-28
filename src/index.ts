@@ -1,5 +1,5 @@
 export { DataTable } from './components/DataTable'
 export { DefaultDialog } from './components/DefaultDialog'
 export { BaseCustomDialog } from './components/BaseCustomDialog'
-export { DataTableConfig } from './types/DataTableTypes'
-export { Entity } from './types/abstract-entity'
+export type { DataTableConfig } from './types/DataTableConfig'
+export type {Entity} from './types/entity'
