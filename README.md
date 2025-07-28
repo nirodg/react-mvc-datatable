@@ -12,6 +12,10 @@
 
 Intead of repetitve copy-paste I made myself a library that helps up to build pages that contains DataTable elements.
 
+## Install
+```sh
+npm i react-mvc-datatable
+```
 
 ## How-To
 Create the needed entity that extends **Entity**
