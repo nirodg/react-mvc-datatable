@@ -1,7 +1,7 @@
 {
   "name": "react-mvc-datatable",
   "private": false,
-  "version": "1.0.2-dev",
+  "version": "1.0.3-dev",
   "type": "module",
   "description": "A reusable MUI-based abstract datatable for React apps",
   "license": "MIT",
