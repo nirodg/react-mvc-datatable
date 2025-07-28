@@ -28,11 +28,23 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts"
     },
     "./DataTable": {
       "import": "./dist/components/DataTable.js",
       "types": "./dist/components/DataTable.d.ts"
+    },
+    "./types/abstract-entity": {
+      "import": "./dist/types/abstract-entity.js",
+      "types": "./dist/types/abstract-entity.d.ts"
+    },
+    "./types/BaseCustomDialogTypes": {
+      "import": "./dist/types/BaseCustomDialogTypes.js",
+      "types": "./dist/types/BaseCustomDialogTypes.d.ts"
+    },
+    "./types/DataTableTypes": {
+      "import": "./dist/types/DataTableTypes.js",
+      "types": "./dist/types/DataTableTypes.d.ts"
     }
   },
   "scripts": {
